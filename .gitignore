@@ -17,4 +17,3 @@ bin/*
 
 # local env file
 configs/env.local
-configs/env.docker
