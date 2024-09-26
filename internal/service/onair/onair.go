@@ -22,6 +22,8 @@ func (oas *onAirService) SetOnAirStatus(
 		oas.onAir.LastOnAir = null.TimeFrom(time.Now())
 	}
 
+	wl.Debugf("setting onAir: %v", oas.onAir)
+
 	return oas.onAir, nil
 
 }
@@ -30,6 +32,8 @@ func (oas *onAirService) GetOnAirStatus(
 	ctx context.Context,
 	wl wlog.Logger,
 ) (entities.OnAirStatus, error) {
+
+	wl.Debugf("getting onAir: %v", oas.onAir)
 
 	return oas.onAir, nil
 }
@@ -41,9 +45,11 @@ func (oas *onAirService) ToggleOnAirStatus(
 	oas.onAir.LastUpdated = null.TimeFrom(time.Now())
 
 	if oas.onAir.IsOnAir {
+		wl.Debug("currenty on air, setting to off and setting last on air")
 		oas.onAir.LastOnAir = null.TimeFrom(time.Now())
 	}
 
 	oas.onAir.IsOnAir = !oas.onAir.IsOnAir
+	wl.Debugf("toggling onAir: %v", oas.onAir)
 	return oas.onAir, nil
 }
