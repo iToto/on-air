@@ -1,5 +1,5 @@
 ## builder
-FROM golang:1.18 as builder
+FROM golang:1.23 as builder
 ARG ENV=docker
 WORKDIR /on-air/
 
@@ -23,7 +23,7 @@ RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -mod=vendor -v ./cmd/on-air
 FROM alpine:3
 RUN apk add --no-cache ca-certificates tzdata
 
-COPY --from=builder /on-air/on-air /on-air
+COPY --from=builder /on-air/on-air /on-air/on-air
 COPY --from=builder /on-air/config.env /on-air/config.env
 
 #default entry point for service

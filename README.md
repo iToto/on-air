@@ -10,6 +10,8 @@ This is a simple API that stores on-air status in memory and allows:
 
 Run Locally:
 
-```
-$ make run
+```sh
+
+$> make run
+
 ```
