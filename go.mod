@@ -8,6 +8,7 @@ require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/google/go-querystring v1.1.0
 	github.com/gorilla/mux v1.8.1
+	github.com/guregu/null v4.0.0+incompatible
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
 	github.com/rs/zerolog v1.33.0

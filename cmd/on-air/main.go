@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"on-air/cmd/on-air/internal/handler"
-	"on-air/internal/service/hellosvc"
+	"on-air/internal/service/onair"
 	"on-air/internal/wlog"
 	"on-air/pkg/utils"
 	"os"
@@ -94,26 +94,31 @@ func main() {
 	}
 
 	// setup db
-	db, err := DBConnection()
-	if err != nil {
-		log.Fatal("unable to setup db: %w", err)
-	}
-	defer db.Close()
+	// db, err := DBConnection()
+	// if err != nil {
+	// 	log.Fatal("unable to setup db: %w", err)
+	// }
+	// defer db.Close()
 
 	// setup services
-	helloService, err := hellosvc.New()
+	onAirService, err := onair.New()
 	if err != nil {
-		log.Fatal("unable to init hello service: %w", err)
+		log.Fatal("unable to init on air service: %w", err)
 	}
 
 	// setup router and handlers
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", Index)
-	router.HandleFunc(
-		"/hello",
-		handler.HelloWorld(wl, helloService)).
-		Methods(http.MethodGet, http.MethodOptions)
+	router.Handle("/onAir", handler.GetOnAirStatus(
+		wl, onAirService)).Methods(http.MethodGet, http.MethodOptions)
+
+	router.Handle("/toggle", handler.ToggleOnAirStatus(
+		wl, onAirService)).Methods(http.MethodPost, http.MethodOptions)
+
+	router.Handle("/onAir", handler.SetOnAirStatus(
+		wl, onAirService)).Methods(http.MethodPost, http.MethodOptions)
+
 	wl.Debugf("running on port: %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
